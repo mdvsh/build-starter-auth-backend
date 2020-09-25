@@ -1,0 +1,3 @@
+MONGODB_PSWD=<here>
+MONGODB_DBNAME=<here>
+JWT_ACCESS_KEY=<here>
