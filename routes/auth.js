@@ -4,9 +4,8 @@ var jwt = require("jsonwebtoken");
 var bcryptjs = require("bcryptjs");
 var { reg_val, login_val } = require("../middleware/validation");
 const User = require("../models/User");
-
+var passport = require("passport");
 var router = express.Router();
-
 // get user details
 router.get("/", auth, async (req, res) => {
   try {
@@ -106,6 +105,17 @@ router.post("/login", async (req, res) => {
     console.log(`An error occurred: ${err.message}`);
     res.status(400).send({ error: "An Error Occured." });
   }
+});
+
+router.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
+
+router.get("/google/cb", passport.authenticate("google"), (req, res) => {
+  res.send("boiiiiiiiiiiiii");
 });
 
 module.exports = router;

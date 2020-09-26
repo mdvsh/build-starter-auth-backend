@@ -19,17 +19,19 @@ var userSchema = new Schema({
       }
     },
   },
-  password: { type: String, required: true, minLength: 8 },
+  password: { type: String },
+  gauth_token: { type: String },
   timestamp: { type: String, default: new Date().getTime() },
 });
 
 userSchema.pre("save", async function (next) {
   var user = this;
-  if (user.isModified("password")) {
-    user.password = await bcryptjs.hash(user.password, 16);
+  if (!user.gauth_token) {
+    if (user.isModified("password")) {
+      user.password = await bcryptjs.hash(user.password, 16);
+    }
   }
   next();
 });
-
 
 module.exports = mongoose.model("User", userSchema);
