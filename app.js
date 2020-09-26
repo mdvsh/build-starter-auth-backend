@@ -1,23 +1,28 @@
 var createError = require("http-errors");
 var express = require("express");
-var path = require("path");
 var cookieParser = require("cookie-parser");
 var mongoose = require("mongoose");
 var cors = require("cors");
-const { Console } = require("console");
 var logger = require("morgan");
 var helmet = require("helmet");
-var passport = require("./middleware/passport")
+var passportSetup = require("./middleware/passport")
+var passport = require("passport")
 var indexRouter = require("./routes/index");
 var authRouter = require("./routes/auth");
+var cookieSession = require("cookie-session")
 
 // .env config
 require("dotenv").config();
 
 var app = express();
 app.use(helmet());
+app.use(cookieSession({
+  maxAge: 24 * 60 * 60 * 1000,
+  keys: [process.env.JWT_ACCESS_KEY]
+}));
 
-// database setup
+app.use(passport.initialize());
+app.use(passport.session());
 
 var mongodb_uri = `mongodb+srv://god:${process.env.MONGODB_PSWD}@dweeter-ex4.xkhgv.gcp.mongodb.net/${process.env.MONGODB_DBNAME}?retryWrites=true&w=majority`;
 mongoose

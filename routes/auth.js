@@ -5,6 +5,7 @@ var bcryptjs = require("bcryptjs");
 var { reg_val, login_val } = require("../middleware/validation");
 const User = require("../models/User");
 var passport = require("passport");
+const { resource } = require("../app");
 var router = express.Router();
 // get user details
 router.get("/", auth, async (req, res) => {
@@ -115,7 +116,17 @@ router.get(
 );
 
 router.get("/google/cb", passport.authenticate("google"), (req, res) => {
-  res.send("boiiiiiiiiiiiii");
+  var userInfo = {
+    name: req.user.name,
+    email: req.user.email,
+    timestamp: req.user.timestamp,
+  };
+  res.status(200).send({ user: userInfo });
+});
+
+router.get("/logout", (req, res) => {
+  req.logOut();
+  res.redirect("/");
 });
 
 module.exports = router;

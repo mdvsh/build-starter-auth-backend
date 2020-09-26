@@ -3,6 +3,16 @@ var GoogleStrategy = require("passport-google-oauth20");
 require("dotenv").config();
 const User = require("../models/User");
 
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id).then((user) => {
+    done(null, user);
+  });
+});
+
 passport.use(
   new GoogleStrategy(
     {
@@ -14,7 +24,8 @@ passport.use(
       User.findOne({ gauth_token: profile.id }).then((user) => {
         if (user) {
           // user already there
-          console.log(user);
+        //   console.log(user);
+          done(null, user);
         } else {
           new User({
             name: profile.displayName,
@@ -24,7 +35,8 @@ passport.use(
           })
             .save()
             .then((newUser) => {
-              console.log(newUser);
+            //   console.log(newUser);
+              done(null, newUser);
             });
         }
       });
