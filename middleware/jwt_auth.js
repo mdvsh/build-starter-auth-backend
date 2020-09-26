@@ -6,7 +6,7 @@ module.exports = function jwt_auth(req, res, next) {
 
   if (token) {
     jwt.verify(token, process.env.JWT_ACCESS_KEY, (err, result) => {
-      console.log(err);
+      // console.log(err);
       if (err) return res.sendStatus(403);
       req.user = result;
       next();
