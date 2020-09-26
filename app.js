@@ -5,15 +5,17 @@ var cookieParser = require("cookie-parser");
 var mongoose = require("mongoose");
 var cors = require("cors");
 const { Console } = require("console");
-var logger = require('morgan');
+var logger = require("morgan");
+var helmet = require("helmet");
 
-var indexRouter = require('./routes/index');
-var authRouter = require('./routes/auth');
+var indexRouter = require("./routes/index");
+var authRouter = require("./routes/auth");
 
 // .env config
 require("dotenv").config();
 
 var app = express();
+app.use(helmet());
 
 // database setup
 

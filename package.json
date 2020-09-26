@@ -2,6 +2,9 @@
   "name": "build-starter",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "v12.16.2"
+  },
   "scripts": {
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
@@ -14,6 +17,7 @@
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
+    "helmet": "^4.1.1",
     "http-errors": "~1.6.3",
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
