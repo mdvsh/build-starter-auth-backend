@@ -18,7 +18,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "/auth/google/cb",
+      callbackURL: "https://build-starter-auth-backend.herokuapp.com/auth/google/cb",
+      proxy: true
     },
     (access_token, refresh_token, profile, done) => {
       User.findOne({ gauth_token: profile.id }).then((user) => {
