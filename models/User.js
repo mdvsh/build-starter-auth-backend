@@ -14,7 +14,7 @@ var userSchema = new Schema({
     validate: (mail) => {
       if (!validator.isEmail(mail)) {
         throw new Error({
-          error: "Entered email address is not valid. Please try again.",
+          error: "Entered email address is not valid.",
         });
       }
     },
@@ -25,7 +25,7 @@ var userSchema = new Schema({
 
 userSchema.pre("save", async function (next) {
   var user = this;
-  if (uer.isModified("password")) {
+  if (user.isModified("password")) {
     user.password = await bcryptjs.hash(user.password, 16);
   }
   next();
