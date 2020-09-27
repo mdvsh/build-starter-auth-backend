@@ -1,25 +1,27 @@
-var createError = require("http-errors");
 var express = require("express");
 var cookieParser = require("cookie-parser");
 var mongoose = require("mongoose");
 var cors = require("cors");
 var logger = require("morgan");
 var helmet = require("helmet");
-var passportSetup = require("./middleware/passport")
-var passport = require("passport")
+var passportSetup = require("./middleware/passport");
+var passport = require("passport");
 var indexRouter = require("./routes/index");
 var authRouter = require("./routes/auth");
-var cookieSession = require("cookie-session")
+var cookieSession = require("cookie-session");
+var path = require("path");
 
 // .env config
 require("dotenv").config();
 
 var app = express();
 app.use(helmet());
-app.use(cookieSession({
-  maxAge: 24 * 60 * 60 * 1000,
-  keys: [process.env.JWT_ACCESS_KEY]
-}));
+app.use(
+  cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
+    keys: [process.env.JWT_ACCESS_KEY],
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -41,6 +43,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use("/", indexRouter);
+app.get("/api/test", (req, res) => {
+  res.send("bonjour from the backend 🐼");
+});
 app.use("/auth", authRouter);
+
+if (process.env.NODE_ENV === 'production') {
+  // Serve any static files
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  // Handle React routing, return all requests to React app
+  app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+}
 
 module.exports = app;
