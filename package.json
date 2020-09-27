@@ -10,7 +10,8 @@
     "devstart": "nodemon ./bin/www",
     "serverstart": "DEBUG=myapp:* npm run devstart",
     "client": "cd client && npm run start",
-    "dev": "concurrently --kill-others-on-fail \"npm run start\" \"npm run client "
+    "dev": "concurrently --kill-others-on-fail \"npm run start\" \"npm run client ",
+    "heroku-postbuild": "cd client && npm install && npm install --no-shrinkwrap && npm run build"
   },
   "dependencies": {
     "axios": "^0.20.0",
