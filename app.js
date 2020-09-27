@@ -9,7 +9,6 @@ var passport = require("passport");
 var indexRouter = require("./routes/index");
 var authRouter = require("./routes/auth");
 var cookieSession = require("cookie-session");
-var path = require("path");
 
 // .env config
 require("dotenv").config();
@@ -42,19 +41,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// app.use("/", indexRouter);
+app.use("/", indexRouter);
 app.get("/api/test", (req, res) => {
   res.send("bonjour from the backend 🐼");
 });
 app.use("/auth", authRouter);
-
-if (process.env.NODE_ENV === 'production') {
-  // Serve any static files
-  app.use(express.static(path.join(__dirname, 'client/build')));
-  // Handle React routing, return all requests to React app
-  app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-  });
-}
 
 module.exports = app;
